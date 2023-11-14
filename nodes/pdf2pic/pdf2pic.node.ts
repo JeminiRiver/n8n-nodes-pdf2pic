@@ -1,0 +1,147 @@
+import { IExecuteFunctions } from 'n8n-core';
+import {
+	INodeExecutionData,
+	INodeType,
+	INodeTypeDescription,
+	NodeOperationError,
+} from 'n8n-workflow';
+
+import { fromPath } from "pdf2pic";
+
+//var sizeOf = require('image-size');
+
+export class pdf2pic implements INodeType {
+	description: INodeTypeDescription = {
+		displayName: 'PDF2PIC',
+		name: 'pdf2pic',
+		group: ['transform'],
+		version: 1,
+		description: 'PDF2Pic Node',
+		defaults: {
+			name: 'pdf2pic',
+		},
+		inputs: ['main'],
+		outputs: ['main'],
+		properties: [
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				default: 'imagesToPDF',
+				required: true,
+				options:[
+					{
+						name:'Covert Images To PDF',
+						value:'imagesToPDF'
+					}
+				],
+			},
+			{
+				displayName: 'Destination Key',
+				name: 'outputKey',
+				type: 'string',
+				default: 'data',
+				required: true,
+				description: 'The name the binary key to copy data to',
+			},
+			{
+				displayName: 'PDF Name',
+				name: 'pdfName',
+				type: 'string',
+				default: '',
+				required: true,
+				description: 'The name of the output PDF',
+			},
+			{
+				displayName: 'Keep Images',
+				name: 'keepImages',
+				type: 'boolean',
+				default: false,
+				description: 'Whether to keep images that were used in the PDF',
+			},
+		],
+	};
+
+	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+		const options = {
+		  density: 100,
+		  saveFilename: "untitled",
+		  savePath: "./images",
+		  format: "png",
+		  width: 600,
+		  height: 600
+		};
+		const convert = fromPath("/path/to/pdf/sample.pdf", options);
+		const pageToConvertAsImage = 1;
+
+		convert(pageToConvertAsImage, { responseType: "image" })
+		  .then((resolve) => {
+			//console.log("Page 1 is now converted as image");
+			return resolve;
+		  });
+
+
+		//OG sample code to scrub clean
+
+		const items = this.getInputData();
+		/*
+		let item: INodeExecutionData;
+		const keepImages = this.getNodeParameter('keepImages', 0, false) as boolean;
+
+		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
+			try {
+				const outputName = this.getNodeParameter('pdfName', itemIndex, '') as string;
+				const outputKey = this.getNodeParameter('outputKey', itemIndex, '') as string;
+				item = items[itemIndex];
+
+				if (item.binary === undefined) {
+					throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
+				}
+
+				let doc;
+				for (var [index,key] of Object.keys(item.binary).entries()){
+					const binary = Object.assign({},item.binary[key]);
+					if(binary.fileType==='image'){
+						const binaryDataBuffer = await this.helpers.getBinaryDataBuffer(itemIndex, key);
+						const dimensions = sizeOf(binaryDataBuffer);
+						const size =[dimensions.width,dimensions.height];
+						if(index !== 0){
+							doc.addPage({size:size});
+						}
+						else{
+							doc = new PDFDocument({margin:0, size:size});
+						}
+						doc.image(binaryDataBuffer, 0, 0, { fit: size, align: 'center', valign: 'center' })
+						if(!keepImages){
+							delete item.binary[key];
+						}
+					}
+				}
+				doc.end();
+				item.binary![outputKey] = await this.helpers.prepareBinaryData(doc, `${outputName}.pdf`);
+
+			} catch (error) {
+				// This node should never fail but we want to showcase how
+				// to handle errors.
+				if (this.continueOnFail()) {
+					items.push({ json: this.getInputData(itemIndex)[0].json, error, pairedItem: itemIndex });
+				} else {
+					// Adding `itemIndex` allows other workflows to handle this error
+					if (error.context) {
+						// If the error thrown already contains the context property,
+						// only append the itemIndex
+						error.context.itemIndex = itemIndex;
+						throw error;
+					}
+					throw new NodeOperationError(this.getNode(), error, {
+						itemIndex,
+					});
+				}
+			}
+		}
+		*/
+
+		return this.prepareOutputData(items);
+	}
+}
