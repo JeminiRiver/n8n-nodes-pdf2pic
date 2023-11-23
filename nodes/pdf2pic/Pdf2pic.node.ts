@@ -1,4 +1,3 @@
-/* eslint-disable n8n-nodes-base/node-filename-against-convention */
 import {
 	INodeExecutionData,
 	IExecuteFunctions,
@@ -8,7 +7,7 @@ import {
 } from 'n8n-workflow';
 import { PngPageOutput, pdfToPng } from 'pdf-to-png-converter';
 
-export class PdfToPic implements INodeType {
+export class Pdf2pic implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'PDF-2-PIC',
 		name: 'pdf2pic',

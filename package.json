@@ -1,28 +1,28 @@
 {
-  "name": "n8n-nodes-pdftopic",
-  "version": "0.3.2",
+  "name": "@river.n8n/n8n-nodes-pdf2pic",
+  "version": "0.3.6",
   "description": "Node for using pdf-to-png-converter to tranform PDFs to images.",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/JeminiRiver/n8n-nodes-pdftopic.git",
+  "homepage": "https://github.com/JeminiRiver/n8n-nodes-pdf2pic.git",
   "author": {
     "name": "Jemini Willis",
     "email": "jdubdev@pm.me"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/JeminiRiver/n8n-nodes-pdftopic.git"
+    "url": "git+https://github.com/JeminiRiver/n8n-nodes-pdf2pic.git"
   },
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf node_modules",
+    "clean": "rm -rf node_modules && rm -rf package-lock.json",
     "reinstall": "npm run clean && npm install",
     "rebuild": "npm run clean && npm install && npm run build",
     "build": "rm -rf dist && tsc && gulp build:icons && npm run copyIcon",
-    "local": "npm run build && npm link && npm --prefix ~/.n8n/nodes/ link n8n-nodes-pdftopic && n8n start",
-    "copyIcon": "cp -R icon.png dist/nodes/PdfToPic/",
+    "local": "npm run build && npm link && npm --prefix ~/.n8n/nodes/ link @river.n8n/n8n-nodes-pdf2pic && n8n start",
+    "copyIcon": "cp -R icon.png dist/nodes/pdf2pic/",
     "dev": "tsc --watch",
     "format": "prettier nodes --write",
     "lint": "eslint nodes package.json",
@@ -36,7 +36,7 @@
     "n8nNodesApiVersion": 1,
     "credentials": [],
     "nodes": [
-      "dist/nodes/PdfToPic/PdfToPic.node.js"
+      "dist/nodes/pdf2pic/Pdf2pic.node.js"
     ]
   },
   "devDependencies": {
@@ -52,7 +52,6 @@
   },
   "dependencies": {
     "eslint": "^8.40.0",
-    "gm": "^1.25.0",
     "pdf-to-png-converter": "^3.1.0"
   }
 }
