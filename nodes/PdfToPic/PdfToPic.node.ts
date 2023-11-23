@@ -5,8 +5,7 @@ import {
 	INodeTypeDescription,
 	NodeOperationError,
 } from 'n8n-workflow';
-
-import { fromBuffer } from "pdf2pic";
+import { PngPageOutput, pdfToPng } from 'pdf-to-png-converter';
 
 export class PdfToPic implements INodeType {
 	description: INodeTypeDescription = {
@@ -44,60 +43,60 @@ export class PdfToPic implements INodeType {
 				default: 'data',
 				required: true,
 				description: 'The name the binary key to copy data to',
-			},
-			{
-				displayName: 'PDF Name',
-				name: 'pdfName',
-				type: 'string',
-				default: '',
-				required: true,
-				description: 'The name of the output PDF',
 			}
 		],
 	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-		const options = {
-		  density: 100,
-		  format: "png",
-		  width: 600,
-		  height: 600
-		};
-
 		const items = this.getInputData();
-
 		let item: INodeExecutionData;
+		if( items.length <= 0 ) {
+			throw new NodeOperationError(this.getNode(), 'No items where sent!');
+		}
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
+
 			try {
-				const outputName = this.getNodeParameter('pdfName', itemIndex, '') as string;
 				const outputKey = this.getNodeParameter('outputKey', itemIndex, '') as string;
 				item = items[itemIndex];
+
+				item.json['Status'] = 'Have Items';
 
 				if (item.binary === undefined) {
 					throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
 				}
 
 				for (var [,key] of Object.keys(item.binary).entries()){
+
+					item.json['Status'] = 'Have Binaries';
+
 					const binary = Object.assign({},item.binary[key]);
 					if(binary.fileType==='pdf'){
+
+						item.json['Status'] = 'Have PDF';
+
 						const binaryDataBuffer = await this.helpers.getBinaryDataBuffer(itemIndex, key);
 
-						let convert = fromBuffer(binaryDataBuffer, options);
+						//let convert = fromBuffer(binaryDataBuffer, options);
 
-						convert.bulk(-1, { responseType: "base64" }).then((outputs) => {
-							outputs.forEach(async (output) => {
-								let base64 = output.base64 || "";
-								//`${outputName}.${output.page?.toString()}.png`
-								item.binary![outputKey+"_"+output.page] = await this.helpers.prepareBinaryData(Buffer.from(base64, 'base64'), `${outputName}.${output.page}.png`);
-								//item.json[outputKey] = output.base64;
-						  	});
+						const pngPages: PngPageOutput[] = await pdfToPng(binaryDataBuffer, {
+							viewportScale: 2.0,
 						});
 
+						pngPages.forEach(async (pngPage: PngPageOutput, index: number) => {
+							item.json['Status'] = 'Have Pages';
+
+							Buffer.from("Hello World").toString('base64')
+							item.json[outputKey+"."+pngPage.pageNumber] = Buffer.from(pngPage.content).toString('base64');
+							item.binary![key+"."+pngPage.pageNumber] = await this.helpers.prepareBinaryData(pngPage.content);
+
+						});
+
+						delete item.binary[key];
+					} else {
+						throw new NodeOperationError(this.getNode(), 'No pdf exists on item!');
 					}
 				}
-
-				//item.binary![outputKey] = await this.helpers.prepareBinaryData(doc, `${outputName}.png`);
 
 			} catch (error) {
 				// This node should never fail but we want to showcase how
@@ -117,6 +116,7 @@ export class PdfToPic implements INodeType {
 					});
 				}
 			}
+
 		}
 
 		return this.prepareOutputData(items);

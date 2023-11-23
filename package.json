@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-pdf2pic",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Node for using pdf2pic to tranform PDFs to images.",
   "keywords": [
     "n8n-community-node-package"
@@ -17,10 +17,13 @@
   },
   "main": "index.js",
   "scripts": {
-	"clean": "rm -rf node_modules",
-	"reinstall": "npm run clean && npm install",
-	"rebuild": "npm run clean && npm install && npm run build",
-	"build": "tsc && gulp build:icons",
+    "clean": "rm -rf node_modules",
+    "reinstall": "npm run clean && npm install",
+    "rebuild": "npm run clean && npm install && npm run build",
+    "build": "rm -rf dist && tsc && gulp build:icons && npm run copyIcon",
+    "publishLocal": "npm run build && npm link",
+    "debugging": "cd ~/.n8n/nodes && npm link n8n-nodes-pdf2pic && n8n start",
+    "copyIcon": "cp -R icon.png dist/nodes/PdfToPic/",
     "dev": "tsc --watch",
     "format": "prettier nodes --write",
     "lint": "eslint nodes package.json",
@@ -34,7 +37,7 @@
     "n8nNodesApiVersion": 1,
     "credentials": [],
     "nodes": [
-      "dist/nodes/PdfToPic/PdfToPic.node.ts"
+      "dist/nodes/PdfToPic/PdfToPic.node.js"
     ]
   },
   "devDependencies": {
@@ -50,6 +53,7 @@
   },
   "dependencies": {
     "eslint": "^8.40.0",
-    "pdf2pic": "^3.0.3"
+    "gm": "^1.25.0",
+    "pdf-to-png-converter": "^3.1.0"
   }
 }
