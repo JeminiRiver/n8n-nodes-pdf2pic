@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-pdf2pic",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "description": "Node for using pdf2pic to tranform PDFs to images.",
   "keywords": [
     "n8n-community-node-package"
@@ -31,7 +31,7 @@
     "n8nNodesApiVersion": 1,
     "credentials": [],
     "nodes": [
-      "dist/nodes/pdf2pic/Pdf2pic.node.js"
+      "dist/nodes/pdf2pic/Pdf2pic.node.ts"
     ]
   },
   "devDependencies": {
