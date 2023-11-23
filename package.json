@@ -17,7 +17,10 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "tsc && gulp build:icons",
+	"clean": "rm -rf node_modules",
+	"reinstall": "npm run clean && npm install",
+	"rebuild": "npm run clean && npm install && npm run build",
+	"build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
     "format": "prettier nodes --write",
     "lint": "eslint nodes package.json",
@@ -31,7 +34,7 @@
     "n8nNodesApiVersion": 1,
     "credentials": [],
     "nodes": [
-      "dist/nodes/pdf2pic/Pdf2pic.node.ts"
+      "dist/nodes/PdfToPic/PdfToPic.node.ts"
     ]
   },
   "devDependencies": {

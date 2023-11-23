@@ -8,9 +8,9 @@ import {
 
 import { fromBuffer } from "pdf2pic";
 
-export class Pdf2pic implements INodeType {
+export class PdfToPic implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'PDF2PIC',
+		displayName: 'PDF-2-PIC',
 		name: 'pdf2pic',
 		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: "file:icon.png",
@@ -18,7 +18,7 @@ export class Pdf2pic implements INodeType {
 		version: 1,
 		description: 'PDF2Pic Node',
 		defaults: {
-			name: 'PDF2PIC',
+			name: 'PDF-2-Pic',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
