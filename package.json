@@ -1,19 +1,19 @@
 {
-  "name": "n8n-nodes-pdf2pic",
+  "name": "n8n-nodes-pdftopic",
   "version": "0.3.0",
   "description": "Node for using pdf-to-png-converter to tranform PDFs to images.",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/jdubdev/n8n-nodes-pdf2pic.git",
+  "homepage": "https://github.com/jdubdev/n8n-nodes-pdftopic.git",
   "author": {
     "name": "Jemini Willis",
     "email": "jdubdev@pm.me"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jdubdev/n8n-nodes-pdf2pic.git"
+    "url": "https://github.com/jdubdev/n8n-nodes-pdftopic.git"
   },
   "main": "index.js",
   "scripts": {
