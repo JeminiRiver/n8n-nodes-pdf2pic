@@ -1,7 +1,7 @@
 {
   "name": "n8n-nodes-pdf2pic",
   "version": "0.3.0",
-  "description": "Node for using pdf2pic to tranform PDFs to images.",
+  "description": "Node for using pdf-to-png-converter to tranform PDFs to images.",
   "keywords": [
     "n8n-community-node-package"
   ],
