@@ -31,7 +31,7 @@
     "n8nNodesApiVersion": 1,
     "credentials": [],
     "nodes": [
-      "dist/nodes/pdf2pic/pdf2pic.node.js"
+      "dist/nodes/pdf2pic/Pdf2pic.node.js"
     ]
   },
   "devDependencies": {
@@ -47,7 +47,6 @@
   },
   "dependencies": {
     "eslint": "^8.40.0",
-    "image-size": "^1.0.2",
     "pdf2pic": "^3.0.3"
   }
 }
