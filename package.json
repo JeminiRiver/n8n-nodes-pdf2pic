@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-pdftopic",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Node for using pdf-to-png-converter to tranform PDFs to images.",
   "keywords": [
     "n8n-community-node-package"
@@ -21,8 +21,7 @@
     "reinstall": "npm run clean && npm install",
     "rebuild": "npm run clean && npm install && npm run build",
     "build": "rm -rf dist && tsc && gulp build:icons && npm run copyIcon",
-    "publishLocal": "npm run build && npm link",
-    "debugging": "cd ~/.n8n/nodes && npm link n8n-nodes-pdf2pic && n8n start",
+    "local": "npm run build && npm link && npm --prefix ~/.n8n/nodes/ link n8n-nodes-pdftopic && n8n start",
     "copyIcon": "cp -R icon.png dist/nodes/PdfToPic/",
     "dev": "tsc --watch",
     "format": "prettier nodes --write",
